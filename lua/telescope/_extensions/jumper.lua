@@ -110,6 +110,31 @@ local function swap_marked(bufnr)
 	current_picker:refresh(create_finder(), { reset_prompt = true })
 end
 
+local function move_path_down(bufnr)
+	local selection = action_state.get_selected_entry()
+	local current_picker = action_state.get_current_picker(bufnr)
+
+	if selection.index == #JumperPaths then
+		return
+	end
+
+	table.remove(JumperPaths, selection.index)
+	table.insert(JumperPaths, selection.index + 1, selection.value)
+	current_picker:refresh(create_finder(), { reset_prompt = true })
+end
+
+local function move_path_up(bufnr)
+	local selection = action_state.get_selected_entry()
+	local current_picker = action_state.get_current_picker(bufnr)
+
+	if selection.index == 1 then
+		return
+	end
+
+	table.remove(JumperPaths, selection.index)
+	table.insert(JumperPaths, selection.index - 1, selection.value)
+	current_picker:refresh(create_finder(), { reset_prompt = true })
+end
 
 local function picker(opts)
 	opts = opts or {}
@@ -128,6 +153,12 @@ local function picker(opts)
 
 				map("n", "<C-e>", edit_path)
 				map("i", "<C-e>", edit_path)
+
+				map("n", "<C-j>", move_path_down)
+				map("i", "<C-j>", move_path_down)
+
+				map("n", "<C-k>", move_path_up)
+				map("i", "<C-k>", move_path_up)
 
 				map("n", "<C-s>", swap_marked)
 				map("i", "<C-s>", swap_marked)
