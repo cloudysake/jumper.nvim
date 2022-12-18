@@ -16,18 +16,7 @@ local function create_finder()
 	return finders.new_table({
 		results = JumperPaths,
 		entry_maker = function(entry)
-			-- local displayer = entry_display.create({
-			-- 	separator = " ",
-			-- 	items = {
-			-- 		{ width = 40 },
-			-- 		{ remaining = true },
-			-- 	}
-			-- })
 			local make_display = function()
-				-- return displayer({
-				-- 	entry.name,
-				-- 	{ string.format("(%s)", entry.path), "Comment" },
-				-- })
 				local icon =
 					string.format("%s  ", JumperConfig.icons[entry.type])
 				local name = string.format("%s ", entry.name)
@@ -121,31 +110,6 @@ local function swap_marked(bufnr)
 	current_picker:refresh(create_finder(), { reset_prompt = true })
 end
 
--- local function move_path_down(bufnr)
--- 	local selection = action_state.get_selected_entry()
--- 	local current_picker = action_state.get_current_picker(bufnr)
---
--- 	if selection.index == #JumperPaths then
--- 		return
--- 	end
---
--- 	table.remove(JumperPaths, selection.index)
--- 	table.insert(JumperPaths, selection.index + 1, selection.value)
--- 	current_picker:refresh(create_finder(), { reset_prompt = true })
--- end
---
--- local function move_path_up(bufnr)
--- 	local selection = action_state.get_selected_entry()
--- 	local current_picker = action_state.get_current_picker(bufnr)
---
--- 	if selection.index == 1 then
--- 		return
--- 	end
---
--- 	table.remove(JumperPaths, selection.index)
--- 	table.insert(JumperPaths, selection.index - 1, selection.value)
--- 	current_picker:refresh(create_finder(), { reset_prompt = true })
--- end
 
 local function picker(opts)
 	opts = opts or {}
