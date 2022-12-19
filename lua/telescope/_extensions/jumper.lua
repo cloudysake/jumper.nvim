@@ -136,6 +136,22 @@ local function move_path_up(bufnr)
 	current_picker:refresh(create_finder(), { reset_prompt = true })
 end
 
+local function send_to_tmux(bufnr)
+	local selected = action_state.get_selected_entry()
+
+	if selected.value.type ~= "directory" then
+		return
+	end
+
+	vim.fn.execute(
+		string.format(
+			'silent !tmux neww tmux-sessionizer "%s" "%s"',
+			vim.fn.expand(selected.path),
+			selected.name
+		)
+	)
+end
+
 local function picker(opts)
 	opts = opts or {}
 	pickers
@@ -162,6 +178,9 @@ local function picker(opts)
 
 				map("n", "<C-s>", swap_marked)
 				map("i", "<C-s>", swap_marked)
+
+				map("n", "<C-t>", send_to_tmux)
+				map("i", "<C-t>", send_to_tmux)
 				return true
 			end,
 		})
